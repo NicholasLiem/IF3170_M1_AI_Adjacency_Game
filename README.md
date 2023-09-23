@@ -18,6 +18,9 @@ To get started, please install the latest version of the Java Development Kit (J
 <hr>
 
 ### Deployment (IntelliJ)
+NOTE: Javafx punya repo asprak itu libnya kosong. Kalo pake punya repo ini aman.
+Note: Buat myVM Options, itu abis di edit configuration pilih application, terus pilih modify options di kanan atas baru ada VM options.
+
 1. Clone the repository through Git by running the following command:<br>
 `git clone https://github.com/GAIB20/adversarial-adjacency-strategy-game.git`, or simply download the repository.
 2. Open the repository folder through IntelliJ.

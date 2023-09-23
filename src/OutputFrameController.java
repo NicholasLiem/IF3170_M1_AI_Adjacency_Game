@@ -77,7 +77,7 @@ public class OutputFrameController {
         this.isBotFirst = isBotFirst;
 
         // Start bot
-        this.bot = new Bot();
+        this.bot = new Bot("minimax");
         this.playerXTurn = !isBotFirst;
         if (this.isBotFirst) {
             this.moveBot();
@@ -353,7 +353,8 @@ public class OutputFrameController {
     }
 
     private void moveBot() {
-        int[] botMove = this.bot.move();
+        int[][] board = convertButtonsToMatrix(this.buttons);
+        int[] botMove = this.bot.move(board, this.roundsLeft);
         int i = botMove[0];
         int j = botMove[1];
 
@@ -365,4 +366,24 @@ public class OutputFrameController {
 
         this.selectedCoordinates(i, j);
     }
+
+    private int[][] convertButtonsToMatrix(Button[][] buttons) {
+        int[][] matrix = new int[8][8];
+
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                String buttonText = buttons[i][j].getText();
+                if ("X".equals(buttonText)) {
+                    matrix[i][j] = 1;
+                } else if ("O".equals(buttonText)) {
+                    matrix[i][j] = -1;
+                } else {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+
+        return matrix;
+    }
+
 }
