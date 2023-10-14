@@ -7,11 +7,11 @@ import Algorithms.DataStructure.Tree;
 public class Minimax {
     Tree tree;
     public void constructTree(int test){
-        tree = new Tree();
-        int[] testPoint = {2,3};
-        Node root = new Node(testPoint, true);
-        tree.setRoot(root);
-        constructTree(root);
+//        tree = new Tree();
+//        int[] testPoint = {2,3};
+//        Node root = new Node(testPoint, true);
+//        tree.setRoot(root);
+//        constructTree(root);
     }
 
     public void constructTree(Node parentNode) {
