@@ -1,7 +1,9 @@
 package Utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Utils {
 
@@ -25,9 +27,7 @@ public class Utils {
         int[][] copy = new int[numRows][numCols];
 
         for (int i = 0; i < numRows; i++) {
-            for (int j = 0; j < numCols; j++) {
-                copy[i][j] = board[i][j];
-            }
+            System.arraycopy(board[i], 0, copy[i], 0, numCols);
         }
 
         return copy;
@@ -58,36 +58,88 @@ public class Utils {
         return countPlayers(board) == maxPiece + 8;
     }
 
+//    public static List<int[]> getPossibleMoves(int[][] board) {
+//        List<int[]> possibleMoves = new ArrayList<>();
+//
+//        // Define the possible adjacent directions (up, down, left, right)
+//        int[] dx = {-1, 1, 0, 0,1,-1,1,-1};
+//        int[] dy = {0, 0, -1, 1,1,-1,-1,1};
+//
+//        for (int i = 0; i < board.length; i++) {
+//            for (int j = 0; j < board[i].length; j++) {
+//                if (board[i][j] == 0) {
+//                    // Check adjacent cells
+//                    for (int k = 0; k < 8; k++) {
+//                        int newRow = i + dx[k];
+//                        int newCol = j + dy[k];
+//
+//                        // Check if the adjacent cell is within the board bounds
+//                        if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[i].length) {
+//                            if (board[newRow][newCol] != 0) {
+//                                // Add the empty cell as a possible move
+//                                possibleMoves.add(new int[]{i, j});
+//                                break;  // No need to check other adjacent cells
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        return possibleMoves;
+//    }
+
     public static List<int[]> getPossibleMoves(int[][] board) {
         List<int[]> possibleMoves = new ArrayList<>();
-
-        // Define the possible adjacent directions (up, down, left, right)
-        int[] dx = {-1, 1, 0, 0,1,-1,1,-1};
-        int[] dy = {0, 0, -1, 1,1,-1,-1,1};
-
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 if (board[i][j] == 0) {
-                    // Check adjacent cells
-                    for (int k = 0; k < 8; k++) {
-                        int newRow = i + dx[k];
-                        int newCol = j + dy[k];
-
-                        // Check if the adjacent cell is within the board bounds
-                        if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[i].length) {
-                            if (board[newRow][newCol] != 0) {
-                                // Add the empty cell as a possible move
-                                possibleMoves.add(new int[]{i, j});
-                                break;  // No need to check other adjacent cells
-                            }
-                        }
-                    }
+                    int heuristicValue = calculateHeuristic(board, i, j);
+                    possibleMoves.add(new int[]{i, j, heuristicValue});
                 }
             }
         }
 
-        return possibleMoves;
+        possibleMoves.sort((a, b) -> Integer.compare(b[2], a[2]));
+
+        List<int[]> sortedMoves = possibleMoves.stream()
+                .limit(3)
+                .map(move -> new int[]{move[0], move[1]})
+                .collect(Collectors.toList());
+
+        return sortedMoves;
     }
+
+    private static int calculateHeuristic(int[][] board, int row, int col) {
+        int heuristicValue = 0;
+
+        int[] dx = {-1, 1, 0, 0, 1, -1, 1, -1};
+        int[] dy = {0, 0, -1, 1, 1, -1, -1, 1};
+
+        for (int k = 0; k < 8; k++) {
+            int newRow = row + dx[k];
+            int newCol = col + dy[k];
+
+            if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[0].length) {
+                if (board[newRow][newCol] != 0 && board[newRow][newCol] != 1) {
+                    heuristicValue++;
+                }
+            }
+        }
+        return heuristicValue;
+    }
+
+    public static boolean isTerminal(int[][] board) {
+        for (int[] row : board) {
+            for (int cell : row) {
+                if (cell == 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
 
     public static int[][] transition(int[][] board, int[] move, boolean max) {
 

@@ -9,12 +9,8 @@ import java.util.List;
 public class MinimaxAgent {
     public TreeNode<int[]> calculate(TreeNode<int[]> node, int[][] board, double alpha, double beta, int depth, int maxDepth, boolean isMaximizingPlayer) {
         // Return if terminal node
-        System.out.println("Depth: " + depth);
-        // TODO: make sure the terminal node
-        if (depth == maxDepth) {
+        if (depth == maxDepth || Utils.isTerminal(board)) {
             double score = Utils.evaluateBoard(board);
-            System.out.println("Calculated Score: " + score);
-
             node.setScore(score);
             return node;
         }
@@ -22,16 +18,17 @@ public class MinimaxAgent {
         List<int[]> possibleMoves = Utils.getPossibleMoves(board);
         // Init best move and best score
 
+        double bestScore;
+        TreeNode<int[]> bestMove = null;
         if (isMaximizingPlayer) {
             // Kalau maximizing then bestScorenya set -Inf, iterate for each childrennya dan sampai terminal node,
             // Kalau udah diterminal node nanti kan return nilainya di cek apakah nilainya lebih besar dari bestScore (kasusnya Maximizing)
             // If yes, then update bestScore dan set bestMove to it, also update the current alpha
             // Alpha --> Maximizing antara nilai sekarang dengan alpha, kalo nilai Alpha >= beta dipotong cabangnya.
-            double bestScore = Double.NEGATIVE_INFINITY;
-            TreeNode<int[]> bestMove = null;
+            bestScore = Double.NEGATIVE_INFINITY;
 
             for (int[] move : possibleMoves) {
-                System.out.println("Move: (" + move[0] + ", " + move[1] + ")");
+//                System.out.println("Move: (" + move[0] + ", " + move[1] + ")");
 
                 int[][] newState = Utils.transition(Utils.copyBoard(board), move, true);
                 TreeNode<int[]> childNode = new TreeNode<>(move, false);
@@ -51,15 +48,12 @@ public class MinimaxAgent {
                 }
             }
 
-            node.setScore(bestScore);
-            return bestMove;
         } else {
             // Penjelasannya sama kek sebelumnya tapi kebalikan aja, tapi untuk pemotongan cabang ttp sama.
-            double bestScore = Double.POSITIVE_INFINITY;
-            TreeNode<int[]> bestMove = null;
+            bestScore = Double.POSITIVE_INFINITY;
 
             for (int[] move : possibleMoves) {
-                System.out.println("Move: (" + move[0] + ", " + move[1] + ")");
+//                System.out.println("Move: (" + move[0] + ", " + move[1] + ")");
 
                 int[][] newState = Utils.transition(Utils.copyBoard(board), move, false);
                 TreeNode<int[]> childNode = new TreeNode<>(move, true);
@@ -79,9 +73,9 @@ public class MinimaxAgent {
                 }
             }
 
-            node.setScore(bestScore);
-            return bestMove;
         }
+        node.setScore(bestScore);
+        return bestMove;
     }
 
 }

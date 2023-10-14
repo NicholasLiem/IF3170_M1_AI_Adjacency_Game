@@ -63,17 +63,19 @@ public class Bot {
     }
 
     public int[] moveMinimax(int[][] board, int roundsLeft) {
+        long startTime = System.currentTimeMillis();
         TreeNode<int[]> root = new TreeNode<>(null, true);
         MinimaxAgent minimaxAgent = new MinimaxAgent();
         List<int[]> possibleMoves = Utils.getPossibleMoves(board);
 //        System.out.println("Possible Move Count: " + possibleMoves.size());
 //        return new int[]{0, 0};
         int[] bestMove = null;
+//        int cutValue = 3;
         double bestScore = Double.NEGATIVE_INFINITY;
 
         for (int[] move : possibleMoves) {
             int[][] newState = Utils.transition(Utils.copyBoard(board), move, true);
-            TreeNode<int[]> bestMoveNode = minimaxAgent.calculate(root, newState, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 0, 4, false);
+            TreeNode<int[]> bestMoveNode = minimaxAgent.calculate(root, newState, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 0, 8, false);
             double score = bestMoveNode.getScore();
 
             if (score > bestScore) {
@@ -81,8 +83,11 @@ public class Bot {
                 bestMove = move;
             }
         }
-        assert bestMove != null;
-        System.out.println("Move: " + "(" + bestMove[0] + "," + bestMove[1] + ")");
+
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+        System.out.println("Thinking time: " + executionTime + "ms");
+
         return bestMove;
     }
 }
