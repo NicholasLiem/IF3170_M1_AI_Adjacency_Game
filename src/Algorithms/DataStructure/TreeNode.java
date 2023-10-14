@@ -7,7 +7,7 @@ public class TreeNode<T> {
     private T data;
     private List<TreeNode<T>> children;
     private boolean isMaxPlayer;
-    private int score;
+    private double score;
 
     public TreeNode(T data, boolean isMaxPlayer) {
         this.data = data;
@@ -24,11 +24,11 @@ public class TreeNode<T> {
         return isMaxPlayer;
     }
 
-    public int getScore() {
+    public double getScore() {
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore(double score) {
         this.score = score;
     }
 
@@ -43,4 +43,6 @@ public class TreeNode<T> {
     public void removeChild(TreeNode<T> child) {
         children.remove(child);
     }
+
+    public boolean isLeaf() {return children.isEmpty();}
 }
