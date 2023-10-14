@@ -159,6 +159,7 @@ public class OutputFrameController {
         this.playerXTurn = true;
         this.playerXScore = 4;
         this.playerOScore = 4;
+
     }
 
 

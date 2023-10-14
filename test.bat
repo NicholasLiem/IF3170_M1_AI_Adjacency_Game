@@ -7,5 +7,5 @@ if exist test (
 
 mkdir test
 
-javac -d ./test src/Algorithms/DataStructure/*.java src/Algorithms/*.java src/Test/*.java
+javac -d ./test src/Algorithms/DataStructure/*.java src/Algorithms/*.java src/Test/*.java src/Utils/*.java
 java -cp ./test Test.TestMinMaxTree

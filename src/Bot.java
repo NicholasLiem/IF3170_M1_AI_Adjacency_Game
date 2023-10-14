@@ -1,10 +1,12 @@
+import Algorithms.DataStructure.TreeNode;
+import Algorithms.MinimaxAgent;
 import Utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Bot {
-    private String type;
+    private final String type;
     private Integer maxPiece = 0;
 
     public Bot(String type) {
@@ -18,7 +20,7 @@ public class Bot {
     void debug_log(int[][] board) {
         System.out.println("Evaluation current state: " + Utils.evaluateBoard(board));
         System.out.println("Possible Moves:");
-        List<int[]> possibleMoves = getPossibleMoves(board);
+        List<int[]> possibleMoves = Utils.getPossibleMoves(board);
         for (int[] move : possibleMoves) {
             System.out.println("Row: " + move[0] + ", Col: " + move[1]);
         }
@@ -37,12 +39,12 @@ public class Bot {
             maxPiece = roundsLeft * 2;
         }
 
-        debug_log(board);
+//        debug_log(board);
 
         int[] move = new int[]{(int) (Math.random()*8), (int) (Math.random()*8)};
 
         if (this.type.equalsIgnoreCase("minimax")) {
-            move = this.moveMinimax(board, roundsLeft);
+            move = this.moveMinimax(board, maxPiece);
         } else if (this.type.equalsIgnoreCase("local")) {
             move = this.moveLocal(board);
         } else if (this.type.equalsIgnoreCase("genetic")){
@@ -60,52 +62,27 @@ public class Bot {
         return new int[]{(int) (Math.random()*8), (int) (Math.random()*8)};
     }
 
-    private int[] moveMinimax(int[][] board, int roundsLeft) {
-        return new int[]{(int) (Math.random()*8), (int) (Math.random()*8)};
-    }
+    public int[] moveMinimax(int[][] board, int roundsLeft) {
+        TreeNode<int[]> root = new TreeNode<>(null, true);
+        MinimaxAgent minimaxAgent = new MinimaxAgent();
+        List<int[]> possibleMoves = Utils.getPossibleMoves(board);
+//        System.out.println("Possible Move Count: " + possibleMoves.size());
+//        return new int[]{0, 0};
+        int[] bestMove = null;
+        double bestScore = Double.NEGATIVE_INFINITY;
 
-    public static int[][] transition(int[][] board, int[] move, boolean max) {
+        for (int[] move : possibleMoves) {
+            int[][] newState = Utils.transition(Utils.copyBoard(board), move, true);
+            TreeNode<int[]> bestMoveNode = minimaxAgent.calculate(root, newState, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 0, 4, false);
+            double score = bestMoveNode.getScore();
 
-        // Fill the specified move with 1 or -1 based on the 'max' parameter
-        int fillValue = max ? 1 : -1;
-        int row = move[0];
-        int col = move[1];
-
-        board[row][col] = fillValue;
-
-        return board;
-    }
-
-
-
-    public static List<int[]> getPossibleMoves(int[][] board) {
-        List<int[]> possibleMoves = new ArrayList<>();
-
-        // Define the possible adjacent directions (up, down, left, right)
-        int[] dx = {-1, 1, 0, 0,1,-1,1,-1};
-        int[] dy = {0, 0, -1, 1,1,-1,-1,1};
-
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                if (board[i][j] == 0) {
-                    // Check adjacent cells
-                    for (int k = 0; k < 8; k++) {
-                        int newRow = i + dx[k];
-                        int newCol = j + dy[k];
-
-                        // Check if the adjacent cell is within the board bounds
-                        if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[i].length) {
-                            if (board[newRow][newCol] != 0) {
-                                // Add the empty cell as a possible move
-                                possibleMoves.add(new int[]{i, j});
-                                break;  // No need to check other adjacent cells
-                            }
-                        }
-                    }
-                }
+            if (score > bestScore) {
+                bestScore = score;
+                bestMove = move;
             }
         }
-
-        return possibleMoves;
+        assert bestMove != null;
+        System.out.println("Move: " + "(" + bestMove[0] + "," + bestMove[1] + ")");
+        return bestMove;
     }
 }
