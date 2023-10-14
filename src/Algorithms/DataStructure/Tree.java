@@ -1,17 +1,13 @@
 package Algorithms.DataStructure;
 
-public class Tree {
-    Node root;
+public class Tree<T> {
+    private TreeNode<T> root;
 
-    public Tree(Node root){
+    public Tree(TreeNode<T> root) {
         this.root = root;
     }
 
-    public void setRoot(Node root) {
-        this.root = root;
-    }
-
-    public Node getRoot() {
+    public TreeNode<T> getRoot() {
         return root;
     }
 }
