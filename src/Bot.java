@@ -1,3 +1,5 @@
+import Utils.Utils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,45 +15,15 @@ public class Bot {
         return new int[]{(int) (Math.random()*8), (int) (Math.random()*8)};
     }
 
-    // Player X nilainya 1 di board,
-    // Player Y nilainya -1.
-    public static int evaluate(int[][] board) {
-        int sum = 0;
-
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                sum += board[i][j];
-            }
-        }
-
-        return sum;
-    }
-    public static int countPlayers(int[][] board) {
-        int count = 0;
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                if (board[i][j] != 0)  {
-                    count += 1;
-                }
-            }
-        }
-        return count;
-    }
-    public boolean isTerminal(int[][] board) {
-        if (countPlayers(board) == maxPiece + 8) {
-            return true;
-        }
-        return false;
-    }
     void debug_log(int[][] board) {
-        System.out.println("Evaluation current state: " + evaluate(board));
+        System.out.println("Evaluation current state: " + Utils.evaluateBoard(board));
         System.out.println("Possible Moves:");
         List<int[]> possibleMoves = getPossibleMoves(board);
         for (int[] move : possibleMoves) {
             System.out.println("Row: " + move[0] + ", Col: " + move[1]);
         }
         System.out.println("Is board terminal:");
-        System.out.println(isTerminal(board));
+        System.out.println(Utils.isTerminal(maxPiece, board));
 //        System.out.println("Is board terminal after this move:");
 //        int[] movee = {2,3};
 //        System.out.println(isTerminal(transition(board, movee, false)));
@@ -64,6 +36,7 @@ public class Bot {
         if (maxPiece == 0) {
             maxPiece = roundsLeft * 2;
         }
+
         debug_log(board);
 
         int[] move = new int[]{(int) (Math.random()*8), (int) (Math.random()*8)};

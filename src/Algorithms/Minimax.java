@@ -2,9 +2,6 @@ package Algorithms;
 
 import Algorithms.DataStructure.Node;
 import Algorithms.DataStructure.Tree;
-
-import java.util.ArrayList;
-import java.util.List;
 //https://stackoverflow.com/questions/15447580/java-minimax-alpha-beta-pruning-recursion-return
 //https://www.baeldung.com/java-minimax-algorithm
 public class Minimax {
