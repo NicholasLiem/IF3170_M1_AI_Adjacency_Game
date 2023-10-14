@@ -3,11 +3,9 @@ package Algorithms;
 
 import Algorithms.DataStructure.TreeNode;
 
-//https://stackoverflow.com/questions/15447580/java-minimax-alpha-beta-pruning-recursion-return
-//https://www.baeldung.com/java-minimax-algorithm
 public class Minimax {
-    public TreeNode<Double> minimax(TreeNode<Double> node, boolean isMaximizingPlayer){
-        if (node.isLeaf()){
+    public TreeNode<Double> minimax(TreeNode<Double> node, double alpha, double beta, boolean isMaximizingPlayer) {
+        if (node.isLeaf()) {
             return node;
         }
 
@@ -16,22 +14,30 @@ public class Minimax {
 
         if (isMaximizingPlayer) {
             bestScore = Double.NEGATIVE_INFINITY;
-            for(TreeNode<Double> child : node.getChildren()){
-                TreeNode<Double> nextMove = minimax(child, false);
+            for (TreeNode<Double> child : node.getChildren()) {
+                TreeNode<Double> nextMove = minimax(child, alpha, beta, false);
                 double score = nextMove.getScore();
                 if (score > bestScore) {
                     bestScore = score;
                     bestMove = child;
                 }
+                alpha = Math.max(alpha, bestScore);
+                if (beta <= alpha) {
+                    break;  //
+                }
             }
         } else {
             bestScore = Double.POSITIVE_INFINITY;
             for (TreeNode<Double> child : node.getChildren()) {
-                TreeNode<Double> nextMove = minimax(child, true);
+                TreeNode<Double> nextMove = minimax(child, alpha, beta, true);
                 double score = nextMove.getScore();
                 if (score < bestScore) {
                     bestScore = score;
                     bestMove = child;
+                }
+                beta = Math.min(beta, bestScore);
+                if (beta <= alpha) {
+                    break;
                 }
             }
         }
@@ -39,4 +45,5 @@ public class Minimax {
         node.setScore(bestScore);
         return bestMove;
     }
+
 }

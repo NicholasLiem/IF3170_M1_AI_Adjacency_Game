@@ -60,7 +60,7 @@ public class TestMinMaxTree {
         printTreeNode(root);
 
         Minimax minimax = new Minimax();
-        TreeNode<Double> bestMove = minimax.minimax(root, true);
+        TreeNode<Double> bestMove = minimax.minimax(root, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, true);
 
         System.out.println("\nBest Move:");
         printTreeNode(bestMove);
