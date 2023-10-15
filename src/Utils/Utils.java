@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Utils {
+    public static int firstMove = 1;
 
     // Player X nilainya 1 di board,
     // Player Y nilainya -1.
@@ -58,43 +59,16 @@ public class Utils {
         return countPlayers(board) == maxPiece + 8;
     }
 
-//    public static List<int[]> getPossibleMoves(int[][] board) {
-//        List<int[]> possibleMoves = new ArrayList<>();
-//
-//        // Define the possible adjacent directions (up, down, left, right)
-//        int[] dx = {-1, 1, 0, 0,1,-1,1,-1};
-//        int[] dy = {0, 0, -1, 1,1,-1,-1,1};
-//
-//        for (int i = 0; i < board.length; i++) {
-//            for (int j = 0; j < board[i].length; j++) {
-//                if (board[i][j] == 0) {
-//                    // Check adjacent cells
-//                    for (int k = 0; k < 8; k++) {
-//                        int newRow = i + dx[k];
-//                        int newCol = j + dy[k];
-//
-//                        // Check if the adjacent cell is within the board bounds
-//                        if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[i].length) {
-//                            if (board[newRow][newCol] != 0) {
-//                                // Add the empty cell as a possible move
-//                                possibleMoves.add(new int[]{i, j});
-//                                break;  // No need to check other adjacent cells
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        return possibleMoves;
-//    }
 
-    public static List<int[]> getPossibleMoves(int[][] board) {
+    public static List<int[]> getPossibleMoves(int[][] board, boolean isMax) {
+        // Print board
+//        Utils.printBoard(board);
         List<int[]> possibleMoves = new ArrayList<>();
+
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
                 if (board[i][j] == 0) {
-                    int heuristicValue = calculateHeuristic(board, i, j);
+                    int heuristicValue = calculateHeuristic(board, i, j, isMax);
                     possibleMoves.add(new int[]{i, j, heuristicValue});
                 }
             }
@@ -102,27 +76,53 @@ public class Utils {
 
         possibleMoves.sort((a, b) -> Integer.compare(b[2], a[2]));
 
+        if (firstMove == 1) {
+            firstMove = 0;
+            System.out.println("Sorted Moves: for " + (isMax ? "Max" : "Min") + " player");
+            for (int[] move : possibleMoves) {
+                System.out.println("Row: " + move[0] + ", Col: " + move[1] + ", Heuristic: " + move[2]);
+            }
+            List<int[]> sortedMoves = possibleMoves.stream()
+                    .limit(10)
+                    .map(move -> new int[]{move[0], move[1]})
+                    .collect(Collectors.toList());
+        }
         List<int[]> sortedMoves = possibleMoves.stream()
-                .limit(3)
+                .limit(5)
                 .map(move -> new int[]{move[0], move[1]})
                 .collect(Collectors.toList());
+
 
         return sortedMoves;
     }
 
-    private static int calculateHeuristic(int[][] board, int row, int col) {
+    private static int calculateHeuristic(int[][] board, int row, int col, boolean isMax) {
         int heuristicValue = 0;
 
-        int[] dx = {-1, 1, 0, 0, 1, -1, 1, -1};
-        int[] dy = {0, 0, -1, 1, 1, -1, -1, 1};
+        int[] dx = {-1, 1, 0, 0};
+        int[] dy = {0, 0, -1, 1};
+        if (firstMove==1) {
+            System.out.println(row +""+ col);
+        }
 
-        for (int k = 0; k < 8; k++) {
+        for (int k = 0; k < 4; k++) {
             int newRow = row + dx[k];
             int newCol = col + dy[k];
 
             if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[0].length) {
-                if (board[newRow][newCol] != 0 && board[newRow][newCol] != 1) {
+                int enemy = isMax ? -1 : 1;
+                int self = enemy == -1 ? 1 : -1;
+
+                if (board[newRow][newCol] == enemy) {
                     heuristicValue++;
+                    if (firstMove==1) {
+                        System.out.println("Enemy found at" + newRow + " " + newCol);
+                    }
+                }
+                if (heuristicValue != 0) {
+                    if (newRow == 0 || newCol == 0 || newRow == 7 || newCol == 7) {
+                        heuristicValue += 0.5;
+                    }
                 }
             }
         }
@@ -147,11 +147,10 @@ public class Utils {
         int fillValue = max ? 1 : -1;
         int row = move[0];
         int col = move[1];
-
         board[row][col] = fillValue;
 
-        int[] dx = {-1, 1, 0, 0};
-        int[] dy = {0, 0, -1, 1};
+        int[] dx = {-1, 1, 0, 0, 1,1, -1,-1};
+        int[] dy = {0, 0, -1, 1, 1,-1,1, -1};
 
         for (int i = 0; i < dx.length; i++) {
             int newRow = row + dx[i];

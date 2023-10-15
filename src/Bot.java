@@ -20,10 +20,10 @@ public class Bot {
     void debug_log(int[][] board) {
         System.out.println("Evaluation current state: " + Utils.evaluateBoard(board));
         System.out.println("Possible Moves:");
-        List<int[]> possibleMoves = Utils.getPossibleMoves(board);
-        for (int[] move : possibleMoves) {
-            System.out.println("Row: " + move[0] + ", Col: " + move[1]);
-        }
+//        List<int[]> possibleMoves = Utils.getPossibleMoves(board, true);
+//        for (int[] move : possibleMoves) {
+//            System.out.println("Row: " + move[0] + ", Col: " + move[1]);
+//        }
         System.out.println("Is board terminal:");
         System.out.println(Utils.isTerminal(maxPiece, board));
 //        System.out.println("Is board terminal after this move:");
@@ -44,7 +44,7 @@ public class Bot {
         int[] move = new int[]{(int) (Math.random()*8), (int) (Math.random()*8)};
 
         if (this.type.equalsIgnoreCase("minimax")) {
-            move = this.moveMinimax(board, maxPiece);
+            move = this.moveMinimax(board);
         } else if (this.type.equalsIgnoreCase("local")) {
             move = this.moveLocal(board);
         } else if (this.type.equalsIgnoreCase("genetic")){
@@ -62,27 +62,13 @@ public class Bot {
         return new int[]{(int) (Math.random()*8), (int) (Math.random()*8)};
     }
 
-    public int[] moveMinimax(int[][] board, int roundsLeft) {
+    public int[] moveMinimax(int[][] board) {
         long startTime = System.currentTimeMillis();
-        TreeNode<int[]> root = new TreeNode<>(null, true);
+
+        Utils.firstMove = 1;
         MinimaxAgent minimaxAgent = new MinimaxAgent();
-        List<int[]> possibleMoves = Utils.getPossibleMoves(board);
-//        System.out.println("Possible Move Count: " + possibleMoves.size());
-//        return new int[]{0, 0};
-        int[] bestMove = null;
-//        int cutValue = 3;
-        double bestScore = Double.NEGATIVE_INFINITY;
 
-        for (int[] move : possibleMoves) {
-            int[][] newState = Utils.transition(Utils.copyBoard(board), move, true);
-            TreeNode<int[]> bestMoveNode = minimaxAgent.calculate(root, newState, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 0, 8, false);
-            double score = bestMoveNode.getScore();
-
-            if (score > bestScore) {
-                bestScore = score;
-                bestMove = move;
-            }
-        }
+        int[] bestMove = minimaxAgent.move(board);
 
         long endTime = System.currentTimeMillis();
         long executionTime = endTime - startTime;

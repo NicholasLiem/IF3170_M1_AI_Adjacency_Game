@@ -45,4 +45,20 @@ public class TreeNode<T> {
     }
 
     public boolean isLeaf() {return children.isEmpty();}
+    public void printNodeScores() {
+        printNodeScoresHelper(this, 0);
+    }
+
+    private void printNodeScoresHelper(TreeNode<T> node, int depth) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < depth; i++) {
+            sb.append("\t");
+        }
+        sb.append(", Score: ").append(node.getScore());
+        System.out.println(sb.toString());
+
+        for (TreeNode<T> child : node.getChildren()) {
+            printNodeScoresHelper(child, depth + 1);
+        }
+    }
 }
