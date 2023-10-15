@@ -33,7 +33,7 @@ public class TestMinMaxTree {
         int maxDepth = 8;
         TreeNode<int[]> root = new TreeNode<>(null, true);
 
-        TreeNode<int[]> bestMoveNode = agent.calculate(root, board, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 0, maxDepth, true);
+        TreeNode<int[]> bestMoveNode = agent.calculate(root, board, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 0, maxDepth, true, 1);
 
         int[] bestMove = bestMoveNode.getData();
         long endTime = System.currentTimeMillis();

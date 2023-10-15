@@ -8,6 +8,7 @@ public class TreeNode<T> {
     private List<TreeNode<T>> children;
     private boolean isMaxPlayer;
     private double score;
+    public int[][] board;
 
     public TreeNode(T data, boolean isMaxPlayer) {
         this.data = data;
@@ -26,6 +27,10 @@ public class TreeNode<T> {
 
     public double getScore() {
         return score;
+    }
+
+    public void setBoard(int[][] board) {
+        this.board = board;
     }
 
     public void setScore(double score) {
@@ -56,7 +61,15 @@ public class TreeNode<T> {
         }
         sb.append(", Score: ").append(node.getScore());
         System.out.println(sb.toString());
-
+        // Print board
+        if (node.board != null){
+            for (int[] row : node.board) {
+                for (int cell : row) {
+                    System.out.print(cell + " ");
+                }
+                System.out.println();
+            }
+        }
         for (TreeNode<T> child : node.getChildren()) {
             printNodeScoresHelper(child, depth + 1);
         }

@@ -12,12 +12,13 @@ public class Utils {
     // Player Y nilainya -1.
     public static int evaluateBoard(int[][] board) {
         int sum = 0;
-//        Utils.printBoard(board);
+
         for (int[] ints : board) {
             for (int anInt : ints) {
                 sum += anInt;
             }
         }
+
 
         return sum;
     }
@@ -61,8 +62,7 @@ public class Utils {
 
 
     public static List<int[]> getPossibleMoves(int[][] board, boolean isMax) {
-        // Print board
-//        Utils.printBoard(board);
+
         List<int[]> possibleMoves = new ArrayList<>();
 
         for (int i = 0; i < board.length; i++) {
@@ -76,17 +76,6 @@ public class Utils {
 
         possibleMoves.sort((a, b) -> Integer.compare(b[2], a[2]));
 
-        if (firstMove == 1) {
-            firstMove = 0;
-            System.out.println("Sorted Moves: for " + (isMax ? "Max" : "Min") + " player");
-            for (int[] move : possibleMoves) {
-                System.out.println("Row: " + move[0] + ", Col: " + move[1] + ", Heuristic: " + move[2]);
-            }
-            List<int[]> sortedMoves = possibleMoves.stream()
-                    .limit(10)
-                    .map(move -> new int[]{move[0], move[1]})
-                    .collect(Collectors.toList());
-        }
         List<int[]> sortedMoves = possibleMoves.stream()
                 .limit(5)
                 .map(move -> new int[]{move[0], move[1]})
@@ -101,9 +90,6 @@ public class Utils {
 
         int[] dx = {-1, 1, 0, 0};
         int[] dy = {0, 0, -1, 1};
-        if (firstMove==1) {
-            System.out.println(row +""+ col);
-        }
 
         for (int k = 0; k < 4; k++) {
             int newRow = row + dx[k];
@@ -115,9 +101,6 @@ public class Utils {
 
                 if (board[newRow][newCol] == enemy) {
                     heuristicValue++;
-                    if (firstMove==1) {
-                        System.out.println("Enemy found at" + newRow + " " + newCol);
-                    }
                 }
                 if (heuristicValue != 0) {
                     if (newRow == 0 || newCol == 0 || newRow == 7 || newCol == 7) {
@@ -149,15 +132,17 @@ public class Utils {
         int col = move[1];
         board[row][col] = fillValue;
 
-        int[] dx = {-1, 1, 0, 0, 1,1, -1,-1};
-        int[] dy = {0, 0, -1, 1, 1,-1,1, -1};
+        int[] dx = {-1, 1, 0, 0};
+        int[] dy = {0, 0, -1, 1};
 
         for (int i = 0; i < dx.length; i++) {
             int newRow = row + dx[i];
             int newCol = col + dy[i];
 
             if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[row].length) {
-                board[newRow][newCol] = fillValue;
+                if (board[newRow][newCol] != 0) {
+                    board[newRow][newCol] = fillValue;
+                }
             }
         }
 

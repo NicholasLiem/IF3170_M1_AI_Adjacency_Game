@@ -53,6 +53,7 @@ public class OutputFrameController {
     private Bot bot;
 
 
+    // 6 num rounds = 14 round
     private static final int ROW = 8;
     private static final int COL = 8;
     private Button[][] buttons = new Button[ROW][COL];
@@ -178,6 +179,12 @@ public class OutputFrameController {
         // Button must be blank.
         else {
             if (this.playerXTurn) {
+//                // UNCOMMENT THIS KALO MAU BOT LWN BOT
+//                int[][] board = convertButtonsToMatrix(this.buttons);
+//                Bot bot = new Bot("minimax", true);
+//                int[] movee = bot.move(board, this.roundsLeft);
+//                i = movee[0];
+//                j = movee[1];
                 // Changed background color to green to indicate next player's turn.
                 this.playerXBoxPane.setStyle("-fx-background-color: WHITE; -fx-border-color: #D3D3D3;");
                 this.playerOBoxPane.setStyle("-fx-background-color: #90EE90; -fx-border-color: #D3D3D3;");
@@ -369,10 +376,10 @@ public class OutputFrameController {
     }
 
     private int[][] convertButtonsToMatrix(Button[][] buttons) {
-        int[][] matrix = new int[8][8];
+        int[][] matrix = new int[ROW][COL];
 
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
+        for (int i = 0; i < ROW; i++) {
+            for (int j = 0; j < COL; j++) {
                 String buttonText = buttons[i][j].getText();
                 if ("X".equals(buttonText)) {
                     matrix[i][j] = 1;

@@ -8,20 +8,21 @@ import java.util.List;
 
 public class MinimaxAgent {
 
-    public int[] move(int[][] board) {
+    public int[] move(int[][] board, boolean maximizingPlayer, int roundsLeft) {
         TreeNode<int[]> root = new TreeNode<>(null, false);
-        TreeNode<int[]> bestMove = calculate(root, board, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 0, 6, false);
-        root.printNodeScores();
-        // Print root and all its child
-        System.out.println("Best data: " + bestMove.getScore());
+        TreeNode<int[]> bestMove = calculate(root, board, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 0, 2, maximizingPlayer, roundsLeft);
+//        // TO DEBUG MIN MAX TREE, UNCOMMENT THIS
+//        root.printNodeScores();
+//        System.out.println("Best data: " + bestMove.getScore());
 
         return bestMove.getData();
     }
 
-    public TreeNode<int[]> calculate(TreeNode<int[]> node, int[][] board, double alpha, double beta, int depth, int maxDepth, boolean isMaximizingPlayer) {
+    public TreeNode<int[]> calculate(TreeNode<int[]> node, int[][] board, double alpha, double beta, int depth, int maxDepth, boolean isMaximizingPlayer, int roundsLeft) {
         // Return if terminal node
-        if (depth == maxDepth || Utils.isTerminal(board)) {
+        if (roundsLeft == 0 || depth == maxDepth || Utils.isTerminal(board)) {
             double score = Utils.evaluateBoard(board);
+            node.setBoard(board);
             node.setScore(score);
             return node;
         }
@@ -45,7 +46,7 @@ public class MinimaxAgent {
                 TreeNode<int[]> childNode = new TreeNode<>(move, false);
                 node.addChild(childNode);
 
-                TreeNode<int[]> result = calculate(childNode, newState, alpha, beta, depth + 1, maxDepth, false);
+                TreeNode<int[]> result = calculate(childNode, newState, alpha, beta, depth + 1, maxDepth, false, roundsLeft - 1);
                 double score = result.getScore();
 
                 if (score > bestScore) {
@@ -53,10 +54,10 @@ public class MinimaxAgent {
                     bestMove = childNode;
                 }
 
-//                alpha = Math.max(alpha, bestScore);
-//                if (beta <= alpha) {
-//                    break;
-//                }
+                alpha = Math.max(alpha, bestScore);
+                if (beta <= alpha) {
+                    break;
+                }
             }
 
         } else {
@@ -64,13 +65,12 @@ public class MinimaxAgent {
             bestScore = Double.POSITIVE_INFINITY;
 
             for (int[] move : possibleMoves) {
-//                System.out.println("Move: (" + move[0] + ", " + move[1] + ")");
 
                 int[][] newState = Utils.transition(Utils.copyBoard(board), move, false);
                 TreeNode<int[]> childNode = new TreeNode<>(move, true);
                 node.addChild(childNode);
 
-                TreeNode<int[]> result = calculate(childNode, newState, alpha, beta, depth + 1, maxDepth, true);
+                TreeNode<int[]> result = calculate(childNode, newState, alpha, beta, depth + 1, maxDepth, true, roundsLeft -1);
                 double score = result.getScore();
 
                 if (score < bestScore) {
@@ -78,13 +78,14 @@ public class MinimaxAgent {
                     bestMove = childNode;
                 }
 
-//                beta = Math.min(beta, bestScore);
-//                if (beta <= alpha) {
-//                    break;
-//                }
+                beta = Math.min(beta, bestScore);
+                if (beta <= alpha) {
+                    break;
+                }
             }
 
         }
+        node.setBoard(board);
         node.setScore(bestScore);
         return bestMove;
     }
