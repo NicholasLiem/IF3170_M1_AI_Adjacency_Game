@@ -189,7 +189,7 @@ public class Utils {
     }
 
     public static int countPriority(int[][] board, int row, int col) {
-        int priority = 4;
+        int priority = 0;
 
         int[] dx = {-1, 1, 0, 0};
         int[] dy = {0, 0, -1, 1};
@@ -199,12 +199,29 @@ public class Utils {
             int newCol = col + dy[k];
 
             if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[0].length) {
-                if (board[newRow][newCol] == 0) {
-                    priority--;
+                if (isPriority(board, newRow, newCol)) {
+                    priority++;
                 }
             }
         }
         return priority;
+    }
+
+    public static boolean isPriority(int[][] board, int row, int col) {
+        int[] dx = {-1, 1, 0, 0};
+        int[] dy = {0, 0, -1, 1};
+
+        for (int k = 0; k < 4; k++) {
+            int newRow = row + dx[k];
+            int newCol = col + dy[k];
+
+            if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[0].length) {
+                if (board[newRow][newCol] == 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public static int calculateHeuristic(int[][] board, int row, int col, boolean isOpponent) {
