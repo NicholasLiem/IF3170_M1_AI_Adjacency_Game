@@ -10,7 +10,7 @@ public class MinimaxAgent {
 
     public int[] move(int[][] board, boolean maximizingPlayer, int roundsLeft) {
         TreeNode<int[]> root = new TreeNode<>(null, false);
-        TreeNode<int[]> bestMove = calculate(root, board, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 0, 2, maximizingPlayer, roundsLeft);
+        TreeNode<int[]> bestMove = calculate(root, board, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 0, 8, maximizingPlayer, roundsLeft);
 //        // TO DEBUG MIN MAX TREE, UNCOMMENT THIS
 //        root.printNodeScores();
 //        System.out.println("Best data: " + bestMove.getScore());
@@ -27,7 +27,7 @@ public class MinimaxAgent {
             return node;
         }
 
-        List<int[]> possibleMoves = Utils.getPossibleMoves(board, isMaximizingPlayer);
+        List<int[]> possibleMoves = Utils.getPossibleMoves(board, isMaximizingPlayer, 15);
         // Init best move and best score
 
         double bestScore;

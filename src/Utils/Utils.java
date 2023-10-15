@@ -61,7 +61,7 @@ public class Utils {
     }
 
 
-    public static List<int[]> getPossibleMoves(int[][] board, boolean isMax) {
+    public static List<int[]> getPossibleMoves(int[][] board, boolean isMax, int topK) {
 
         List<int[]> possibleMoves = new ArrayList<>();
 
@@ -77,7 +77,7 @@ public class Utils {
         possibleMoves.sort((a, b) -> Integer.compare(b[2], a[2]));
 
         List<int[]> sortedMoves = possibleMoves.stream()
-                .limit(5)
+                .limit(topK)
                 .map(move -> new int[]{move[0], move[1]})
                 .collect(Collectors.toList());
 

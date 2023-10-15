@@ -1,4 +1,5 @@
 import Algorithms.DataStructure.TreeNode;
+import Algorithms.GeneticAgent;
 import Algorithms.MinimaxAgent;
 import Utils.Utils;
 
@@ -31,19 +32,30 @@ public class Bot {
         if (this.type.equalsIgnoreCase("minimax")) {
             move = this.moveMinimax(board, roundsLeft);
         } else if (this.type.equalsIgnoreCase("local")) {
-            move = this.moveLocal(board);
+            move = this.moveLocal(board, roundsLeft);
         } else if (this.type.equalsIgnoreCase("genetic")){
-            move = this.moveGenetic(board);
+            move = this.moveGenetic(board, roundsLeft);
         }
 
         return move;
     }
 
-    private int[] moveGenetic(int[][] board) {
-        return new int[]{(int) (Math.random()*8), (int) (Math.random()*8)};
+    private int[] moveGenetic(int[][] board, int roundsLeft) {
+        long startTime = System.currentTimeMillis();
+
+        Utils.firstMove = 1;
+        GeneticAgent geneticAgent = new GeneticAgent();
+
+        int[] bestMove = geneticAgent.move(board, maximizingPlayer, roundsLeft);
+
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+        System.out.println("Thinking time: " + executionTime + "ms");
+
+        return bestMove;
     }
 
-    private int[] moveLocal(int[][] board) {
+    private int[] moveLocal(int[][] board, int roundsLeft) {
         return new int[]{(int) (Math.random()*8), (int) (Math.random()*8)};
     }
 
