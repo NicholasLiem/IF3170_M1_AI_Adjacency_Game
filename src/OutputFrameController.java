@@ -78,7 +78,10 @@ public class OutputFrameController {
         this.isBotFirst = isBotFirst;
 
         // Start bot
-        this.bot = new Bot("minimax");
+        // CHOOSE BOT TYPE
+        this.bot = new Bot("genetic");
+//        this.bot = new Bot("minimax");
+
         this.playerXTurn = !isBotFirst;
         if (this.isBotFirst) {
             this.moveBot();

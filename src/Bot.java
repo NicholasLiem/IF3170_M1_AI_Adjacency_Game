@@ -60,6 +60,7 @@ public class Bot {
     }
 
     public int[] moveMinimax(int[][] board, int roundsLeft) {
+        moveGenetic(board, roundsLeft);
         long startTime = System.currentTimeMillis();
 
         Utils.firstMove = 1;
