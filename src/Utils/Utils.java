@@ -128,32 +128,32 @@ public class Utils {
         return sortedMoves;
     }
 
-//    private static int calculateHeuristic(int[][] board, int row, int col, boolean isMax) {
-//        int heuristicValue = 0;
-//
-//        int[] dx = {-1, 1, 0, 0};
-//        int[] dy = {0, 0, -1, 1};
-//
-//        for (int k = 0; k < 4; k++) {
-//            int newRow = row + dx[k];
-//            int newCol = col + dy[k];
-//
-//            if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[0].length) {
-//                int enemy = isMax ? -1 : 1;
-//                int self = enemy == -1 ? 1 : -1;
-//
-//                if (board[newRow][newCol] == enemy) {
-//                    heuristicValue++;
-//                }
-//                if (heuristicValue != 0) {
-//                    if (newRow == 0 || newCol == 0 || newRow == 7 || newCol == 7) {
-//                        heuristicValue += 0.5;
-//                    }
-//                }
-//            }
-//        }
-//        return heuristicValue;
-//    }
+    private static int calculateHeuristic(int[][] board, int row, int col, boolean isMax) {
+        int heuristicValue = 0;
+
+        int[] dx = {-1, 1, 0, 0};
+        int[] dy = {0, 0, -1, 1};
+
+        for (int k = 0; k < 4; k++) {
+            int newRow = row + dx[k];
+            int newCol = col + dy[k];
+
+            if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[0].length) {
+                int enemy = isMax ? -1 : 1;
+                int self = enemy == -1 ? 1 : -1;
+
+                if (board[newRow][newCol] == enemy) {
+                    heuristicValue++;
+                }
+                if (heuristicValue != 0) {
+                    if (newRow == 0 || newCol == 0 || newRow == 7 || newCol == 7) {
+                        heuristicValue += 0.5;
+                    }
+                }
+            }
+        }
+        return heuristicValue;
+    }
 
     public static boolean isTerminal(int[][] board) {
         for (int[] row : board) {
@@ -267,12 +267,12 @@ public class Utils {
         return true;
     }
 
-    public static int calculateHeuristic(int[][] board, int row, int col, boolean isOpponent) {
-        int stateValue = countStateValue(board, row, col, isOpponent);
-        int opponentChance = countOpponentChance(board, row, col, isOpponent);
-        int priority = countPriority(board, row, col);
-
-        return stateValue - opponentChance + priority;
-    }
+//    public static int calculateHeuristic(int[][] board, int row, int col, boolean isOpponent) {
+//        int stateValue = countStateValue(board, row, col, isOpponent);
+//        int opponentChance = countOpponentChance(board, row, col, isOpponent);
+//        int priority = countPriority(board, row, col);
+//
+//        return stateValue - opponentChance + priority;
+//    }
 
 }

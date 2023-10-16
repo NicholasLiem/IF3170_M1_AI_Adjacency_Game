@@ -11,21 +11,20 @@ import Utils.Utils;
 
 public class GeneticAgent {
 
-    int CHROMOSOME_SIZE = 3;
+    int CHROMOSOME_SIZE = 4;
 
     public int[] move(int[][] board, boolean maximizingPlayer, int roundsLeft) {
         Population population = new Population(500, board);
         Population.board = board;
         population.makeReservationTree();
 
-        int generations = 50;
+        int generations = 100;
         Individual best = population.getBestIndividual();
 
         for (int generation = 0; generation < generations; generation++) {
             Population newPopulation = population.evolve();
             population = newPopulation;
             population.makeReservationTree();
-
             Individual bestGeneration = population.getBestIndividual();
             System.out.println(" Generation " + generation);
             System.out.println(" Best Move: (" + bestGeneration.chromosome.get(0)[0] + ", " + bestGeneration.chromosome.get(0)[1] + ")");
@@ -140,10 +139,10 @@ public class GeneticAgent {
             return true;
         }
         // Mutation function
-        public void mutate(double mutationRate) {
+        public void mutate(double mutationRate, int[][] currBoard) {
             if (Math.random() < mutationRate) {
                 int randomPoint = new Random().nextInt(this.getChromosome().size());
-                List<int[]> possibleMoves = Utils.getPossibleMoves(board, (randomPoint % 2 == 0), 1);
+                List<int[]> possibleMoves = Utils.getPossibleMoves(currBoard, (randomPoint % 2 == 1), 1);
                 int[] mutateMove = possibleMoves.get(0);
                 chromosome.set(randomPoint, mutateMove);
                 }
@@ -169,7 +168,7 @@ public class GeneticAgent {
 
         public Population(int size, int[][] initialBoard) {
             individuals = new ArrayList<>();
-            board = initialBoard;
+            this.board = initialBoard;
             for (int i = 0; i < size; i++) {
                 Individual individual = new Individual(initialBoard);
                 individuals.add(individual);
@@ -212,7 +211,7 @@ public class GeneticAgent {
                 Individual parent1 = selectParent();
                 Individual parent2 = selectParent();
                 Individual child = parent1.crossover(parent2);
-                child.mutate(mutationRate);
+                child.mutate(mutationRate, this.board);
                 if (!child.isValid(board)) {
                     continue;
                 }
@@ -235,6 +234,10 @@ public class GeneticAgent {
             }
 
             return selectedParent;
+        }
+
+        public void printFitness() {
+            tree.print(tree.root, 0);
         }
     }
 
@@ -337,7 +340,8 @@ public class GeneticAgent {
 
         public double getFitnessValue(Individual individual) {
             int indivId = individual.id;
-            return fitness.get(indivId);
+            int fitness_ = fitness.get(indivId);
+            return fitness_*fitness_;
         }
 
         private void print(Node node, int depth) {
@@ -348,9 +352,10 @@ public class GeneticAgent {
             for (int i = 0; i < depth; i++) {
                 sb.append("\t");
             }
-            sb.append(", Score: ").append(node.getNodeValue()).append(" " + node.getLeafValue());
-            System.out.println(sb.toString());
-            System.out.println(node.getIds().toString());
+            node.printMove();
+            sb.append("Score: ").append(node.getNodeValue()).append(" ").append(" " + node.getLeafValue());
+            System.out.print(sb.toString());
+            System.out.println(" Individuals: " +  node.getIds().toString());
             for (Node child : node.getChildren()) {
                 print(child, depth+1);
             }
@@ -366,6 +371,11 @@ public class GeneticAgent {
 
             public List<Integer> getIds() {
                 return ids;
+            }
+            public void printMove() {
+                if (move != null) {
+                    System.out.print("Move: (" + move[0] + ", " + move[1] + ")");
+                }
             }
 
             public void setId(List<Integer> ids) {
@@ -406,7 +416,7 @@ public class GeneticAgent {
             }
 
             public boolean isMaxLevel() {
-                return level % 2 == 0;
+                return level % 2 == 1;
             }
 
             public void setLeafValue(int value) {
