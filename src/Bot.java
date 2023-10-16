@@ -1,6 +1,7 @@
 import Algorithms.DataStructure.TreeNode;
 import Algorithms.GeneticAgent;
 import Algorithms.MinimaxAgent;
+import Algorithms.LocalAgent;
 import Utils.Utils;
 
 import java.util.ArrayList;
@@ -56,10 +57,20 @@ public class Bot {
     }
 
     private int[] moveLocal(int[][] board, int roundsLeft) {
-        return new int[]{(int) (Math.random()*8), (int) (Math.random()*8)};
+        long startTime = System.currentTimeMillis();
+        LocalAgent localAgent = new LocalAgent();
+
+        int[] bestMove = localAgent.move(board, roundsLeft);
+
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+        System.out.println("Thinking time: " + executionTime + "ms");
+
+        return bestMove;
     }
 
     public int[] moveMinimax(int[][] board, int roundsLeft) {
+//        moveGenetic(board, roundsLeft);
         long startTime = System.currentTimeMillis();
 
         Utils.firstMove = 1;

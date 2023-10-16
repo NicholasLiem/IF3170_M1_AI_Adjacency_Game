@@ -128,54 +128,32 @@ public class Utils {
         return sortedMoves;
     }
 
-    private static int calculateHeuristic(int[][] board, int row, int col, boolean isMax) {
-        int heuristicValue = 0;
-        int myself = 0;
-
-        int[] dx = {-1, 1, 0, 0};
-        int[] dy = {0, 0, -1, 1};
-
-        for (int k = 0; k < 4; k++) {
-            int newRow = row + dx[k];
-            int newCol = col + dy[k];
-
-            if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[0].length) {
-                int enemy = isMax ? -1 : 1;
-                int self = enemy == -1 ? 1 : -1;
-
-                if (board[newRow][newCol] == enemy) {
-                    heuristicValue++;
-                }
-                if (board[newRow][newCol] == self) {
-                    myself++;
-                }
-            }
-        }
-
-        if (myself >= 2) {
-            heuristicValue += 1;
-        }
-
-        // DIagonal moves, kasih bobot tp dikit aj biar bot ga ngalor ngidul jauh2
-        int[] ddx = {-1, 1, 1, -1};
-        int[] ddy = {-1, 1, -1, 1};
-
-        for (int k = 0; k < 4; k++) {
-            int newRow = row + ddx[k];
-            int newCol = col + ddy[k];
-
-            if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[0].length) {
-                int enemy = isMax ? -1 : 1;
-                int self = enemy == -1 ? 1 : -1;
-
-                if (board[newRow][newCol] != 0) {
-                    heuristicValue += 0.25;
-                }
-            }
-        }
-
-        return heuristicValue;
-    }
+//    private static int calculateHeuristic(int[][] board, int row, int col, boolean isMax) {
+//        int heuristicValue = 0;
+//
+//        int[] dx = {-1, 1, 0, 0};
+//        int[] dy = {0, 0, -1, 1};
+//
+//        for (int k = 0; k < 4; k++) {
+//            int newRow = row + dx[k];
+//            int newCol = col + dy[k];
+//
+//            if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[0].length) {
+//                int enemy = isMax ? -1 : 1;
+//                int self = enemy == -1 ? 1 : -1;
+//
+//                if (board[newRow][newCol] == enemy) {
+//                    heuristicValue++;
+//                }
+//                if (heuristicValue != 0) {
+//                    if (newRow == 0 || newCol == 0 || newRow == 7 || newCol == 7) {
+//                        heuristicValue += 0.5;
+//                    }
+//                }
+//            }
+//        }
+//        return heuristicValue;
+//    }
 
     public static boolean isTerminal(int[][] board) {
         for (int[] row : board) {
@@ -212,6 +190,89 @@ public class Utils {
         }
 
         return board;
+    }
+    public static int countStateValue(int [][] board, int row, int col, boolean isOpponent) {
+        int result = 0;
+        int mark = isOpponent ? -1 : 1;
+
+        int[] dx = {-1, 1, 0, 0};
+        int[] dy = {0, 0, -1, 1};
+
+        for (int k = 0; k < 4; k++) {
+            int newRow = row + dx[k];
+            int newCol = col + dy[k];
+
+            if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[0].length) {
+                if (board[newRow][newCol] == mark) {
+                    result++;
+                }
+            }
+        }
+        return result;
+    }
+
+    public static int countOpponentChance(int[][] board, int row, int col, boolean isOpponent) {
+        int chance = 0;
+
+        int[] dx = {-1, 1, 0, 0};
+        int[] dy = {0, 0, -1, 1};
+
+        for (int k = 0; k < 4; k++) {
+            int newRow = row + dx[k];
+            int newCol = col + dy[k];
+
+            if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[0].length) {
+                if (board[newRow][newCol] == 0) {
+                    int temp = countStateValue(board, newRow, newCol, !isOpponent);
+                    chance = Math.max(temp, chance);
+                }
+            }
+        }
+        return chance;
+    }
+
+    public static int countPriority(int[][] board, int row, int col) {
+        int priority = 0;
+
+        int[] dx = {-1, 1, 0, 0};
+        int[] dy = {0, 0, -1, 1};
+
+        for (int k = 0; k < 4; k++) {
+            int newRow = row + dx[k];
+            int newCol = col + dy[k];
+
+            if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[0].length) {
+                if (isPriority(board, newRow, newCol)) {
+                    priority++;
+                }
+            }
+        }
+        return priority;
+    }
+
+    public static boolean isPriority(int[][] board, int row, int col) {
+        int[] dx = {-1, 1, 0, 0};
+        int[] dy = {0, 0, -1, 1};
+
+        for (int k = 0; k < 4; k++) {
+            int newRow = row + dx[k];
+            int newCol = col + dy[k];
+
+            if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[0].length) {
+                if (board[newRow][newCol] == 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static int calculateHeuristic(int[][] board, int row, int col, boolean isOpponent) {
+        int stateValue = countStateValue(board, row, col, isOpponent);
+        int opponentChance = countOpponentChance(board, row, col, isOpponent);
+        int priority = countPriority(board, row, col);
+
+        return stateValue - opponentChance + priority;
     }
 
 }
