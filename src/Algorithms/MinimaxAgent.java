@@ -27,7 +27,7 @@ public class MinimaxAgent {
             return node;
         }
 
-        List<int[]> possibleMoves = Utils.getPossibleMoves(board, isMaximizingPlayer, 15);
+        List<int[]> possibleMoves = Utils.getPossibleMoves(board, isMaximizingPlayer, 10);
         // Init best move and best score
 
         double bestScore;

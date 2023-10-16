@@ -19,6 +19,49 @@ public class Utils {
             }
         }
 
+        int[] dx = {-1, 1, 0, 0};
+        int[] dy = {0, 0, -1, 1};
+
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j] == -1) {
+                    // Check if this tile is locked.
+                    boolean locked = false;
+                    for (int k = 0; k < dx.length; k++) {
+                        int newRow = i + dx[k];
+                        int newCol = j + dy[k];
+
+                        if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[i].length) {
+                            if (board[newRow][newCol] == 0) {
+                                break;
+                            }
+                        }
+                        locked = true;
+                    }
+                    if (locked) {
+                        sum += -1;
+                    }
+                }
+                if (board[i][j] == 1) {
+                    boolean locked = false;
+                    for (int k = 0; k < dx.length; k++) {
+                        int newRow = i + dx[k];
+                        int newCol = j + dy[k];
+
+                        if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[i].length) {
+                            if (board[newRow][newCol] == 0) {
+                                break;
+                            }
+                        }
+                        locked = true;
+                    }
+                    if (locked) {
+                        sum += 1;
+                    }
+                }
+            }
+        }
+
 
         return sum;
     }
