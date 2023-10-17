@@ -14,6 +14,9 @@ public class GeneticAgent {
     int CHROMOSOME_SIZE = 4;
 
     public int[] move(int[][] board, boolean maximizingPlayer, int roundsLeft) {
+        Population.isMaximizing = maximizingPlayer;
+        Individual.maximizingPlayer = maximizingPlayer;
+
         Population population = new Population(500, board);
         Population.board = board;
         population.makeReservationTree();
@@ -46,6 +49,7 @@ public class GeneticAgent {
         private double fitness;
 
         private int[][] board;
+        public static boolean maximizingPlayer;
 
 
         public Individual(List<int[]> chromosome, int[][] board) {
@@ -74,7 +78,7 @@ public class GeneticAgent {
         public Individual(int[][] initialBoard) {
             List<int[]> chromosome = new ArrayList<>();
             int[][] currentBoard = initialBoard;
-            boolean isMaximizingPlayer = false; // Start with minimizing player
+            boolean isMaximizingPlayer = maximizingPlayer; // Start with minimizing player
 
             // Generate a sequence of moves
             for (int moveNumber = 0; moveNumber < CHROMOSOME_SIZE; moveNumber++) {
@@ -154,6 +158,7 @@ public class GeneticAgent {
         private ReservationTree tree;
         private List<Individual> individuals;
         double mutationRate = 0.01;
+        public static boolean isMaximizing;
 
         public static int[][] board;
 
@@ -176,6 +181,7 @@ public class GeneticAgent {
         }
 
         public void makeReservationTree() {
+            ReservationTree.isMaximizing = this.isMaximizing;
             tree = new ReservationTree();
             for (Individual individual : individuals) {
 //                System.out.println(" INDIVIDUAL ");
@@ -245,6 +251,8 @@ public class GeneticAgent {
         private Node root;
 
         public HashMap<Integer, Integer> fitness;
+
+        static public boolean isMaximizing = false;
 
         public ReservationTree() {
             root = new Node(null, 0, Double.NEGATIVE_INFINITY); // Initialize the root node
@@ -416,7 +424,11 @@ public class GeneticAgent {
             }
 
             public boolean isMaxLevel() {
-                return level % 2 == 1;
+                if (isMaximizing) {
+                    return level % 2 == 0;
+                } else {
+                    return level % 2 == 1;
+                }
             }
 
             public void setLeafValue(int value) {
