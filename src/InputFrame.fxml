@@ -38,6 +38,13 @@
                 </font>
             </Label>
             <CheckBox fx:id="isBotFirst" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+
+            <Label text="Bot type: " GridPane.rowIndex="4" GridPane.columnIndex="0">
+                <font>
+                    <Font name="Arial Bold" size="12"/>
+                </font>
+            </Label>
+            <ComboBox fx:id="botType" GridPane.rowIndex="4" GridPane.columnIndex="1" maxWidth="Infinity" />
         </GridPane>
     </top>
 

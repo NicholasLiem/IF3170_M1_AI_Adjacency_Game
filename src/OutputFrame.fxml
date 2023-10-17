@@ -18,6 +18,21 @@
         <GridPane fx:id="scoreBoard">
             <padding><Insets left="10" right="10"/></padding>
 
+            <HBox alignment="CENTER" GridPane.rowIndex="0" GridPane.columnIndex="0">
+                <Label text="Bot Type" prefWidth="110" wrapText="true" textAlignment="CENTER">
+                    <padding><Insets left="10" right="10"/></padding>
+                    <font>
+                        <Font name="Arial Bold" size="12"/>
+                    </font>
+                </Label>
+            </HBox>
+
+            <HBox id="boxPane" alignment="CENTER" GridPane.rowIndex="0" GridPane.columnIndex="1">
+                <Label fx:id="botTypeLabel">
+
+                </Label>
+            </HBox>
+
             <HBox alignment="CENTER" GridPane.rowIndex="1" GridPane.columnIndex="0">
                 <Label text="Number Of Rounds Left:" prefWidth="110" wrapText="true" textAlignment="CENTER">
                     <padding><Insets left="10" right="10"/></padding>
@@ -32,6 +47,8 @@
 
                 </Label>
             </HBox>
+
+
 
             <HBox alignment="CENTER" GridPane.rowIndex="3" GridPane.columnIndex="0">
                 <Label text="Player X" >

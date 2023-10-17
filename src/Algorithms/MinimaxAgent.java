@@ -7,7 +7,6 @@ import Utils.Utils;
 import java.util.List;
 
 public class MinimaxAgent {
-
     public int[] move(int[][] board, boolean maximizingPlayer, int roundsLeft) {
         TreeNode<int[]> root = new TreeNode<>(null, false);
         int turns = Utils.calculateNumMoves(board, roundsLeft);

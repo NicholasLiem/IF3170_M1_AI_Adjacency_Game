@@ -26,9 +26,9 @@ public class GeneticAgent {
             population = newPopulation;
             population.makeReservationTree();
             Individual bestGeneration = population.getBestIndividual();
-            System.out.println(" Generation " + generation);
-            System.out.println(" Best Move: (" + bestGeneration.chromosome.get(0)[0] + ", " + bestGeneration.chromosome.get(0)[1] + ")");
-            System.out.println(" Fitness: " + bestGeneration.fitness);
+//            System.out.println(" Generation " + generation);
+//            System.out.println(" Best Move: (" + bestGeneration.chromosome.get(0)[0] + ", " + bestGeneration.chromosome.get(0)[1] + ")");
+//            System.out.println(" Fitness: " + bestGeneration.fitness);
             if (best.fitness < bestGeneration.fitness) {
                 best = bestGeneration;
             }
