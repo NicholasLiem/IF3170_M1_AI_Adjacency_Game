@@ -60,7 +60,7 @@ public class Bot {
         long startTime = System.currentTimeMillis();
         LocalAgent localAgent = new LocalAgent();
 
-        int[] bestMove = localAgent.move(board, roundsLeft);
+        int[] bestMove = localAgent.move(board);
 
         long endTime = System.currentTimeMillis();
         long executionTime = endTime - startTime;

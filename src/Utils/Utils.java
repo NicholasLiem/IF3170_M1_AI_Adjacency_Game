@@ -191,6 +191,8 @@ public class Utils {
 
         return board;
     }
+
+
     public static int countStateValue(int [][] board, int row, int col, boolean isOpponent) {
         int result = 0;
         int mark = isOpponent ? -1 : 1;

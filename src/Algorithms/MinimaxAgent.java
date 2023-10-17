@@ -7,7 +7,6 @@ import Utils.Utils;
 import java.util.List;
 
 public class MinimaxAgent {
-
     public int[] move(int[][] board, boolean maximizingPlayer, int roundsLeft) {
         Utils.printBoard(board);
         TreeNode<int[]> root = new TreeNode<>(null, false);
