@@ -32,6 +32,8 @@ public class OutputFrameController {
     @FXML
     private Label roundsLeftLabel;
     @FXML
+    private Label botTypeLabel;
+    @FXML
     private Label playerXName;
     @FXML
     private Label playerOName;
@@ -68,20 +70,19 @@ public class OutputFrameController {
      * @param name2 Name of Player 2 (Bot).
      * @param rounds The number of rounds chosen to be played.
      * @param isBotFirst True if bot is first, false otherwise.
+     * @param botType
      *
      */
-    void getInput(String name1, String name2, String rounds, boolean isBotFirst){
+    void getInput(String name1, String name2, String rounds, boolean isBotFirst, String botType){
         this.playerXName.setText(name1);
         this.playerOName.setText(name2);
         this.roundsLeftLabel.setText(rounds);
+        this.botTypeLabel.setText(botType);
         this.roundsLeft = Integer.parseInt(rounds);
         this.isBotFirst = isBotFirst;
 
         // Start bot
-        // CHOOSE BOT TYPE
-//        this.bot = new Bot("genetic");
-//        this.bot = new Bot("minimax");
-        this.bot = new Bot("local");
+        this.bot = new Bot(botType.toLowerCase());
 
         this.playerXTurn = !isBotFirst;
         if (this.isBotFirst) {
