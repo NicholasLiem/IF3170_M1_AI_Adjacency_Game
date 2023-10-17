@@ -41,6 +41,20 @@ public class Bot {
         return move;
     }
 
+    public int[] move2(int[][] board, int roundsLeft) {
+        int[] move = new int[]{(int) (Math.random()*8), (int) (Math.random()*8)};
+
+        if (this.type.equalsIgnoreCase("minimax")) {
+            move = this.moveMinimax2(board, roundsLeft);
+        } else if (this.type.equalsIgnoreCase("local")) {
+            move = this.moveLocal(board, roundsLeft);
+        } else if (this.type.equalsIgnoreCase("genetic")){
+            move = this.moveGenetic(board, roundsLeft);
+        }
+
+        return move;
+    }
+
     private int[] moveGenetic(int[][] board, int roundsLeft) {
         long startTime = System.currentTimeMillis();
 
@@ -77,6 +91,22 @@ public class Bot {
         MinimaxAgent minimaxAgent = new MinimaxAgent();
 
         int[] bestMove = minimaxAgent.move(board, maximizingPlayer, roundsLeft);
+
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+        System.out.println("Thinking time: " + executionTime + "ms");
+
+        return bestMove;
+    }
+//
+    public int[] moveMinimax2(int[][] board, int roundsLeft) {
+//        moveGenetic(board, roundsLeft);
+        long startTime = System.currentTimeMillis();
+
+        Utils.firstMove = 1;
+        MinimaxAgent minimaxAgent = new MinimaxAgent();
+
+        int[] bestMove = minimaxAgent.move2(board, maximizingPlayer, roundsLeft);
 
         long endTime = System.currentTimeMillis();
         long executionTime = endTime - startTime;

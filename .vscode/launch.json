@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "Main",
+            "projectName": "adversarial-adjacency-strategy-game_40f5ac57"
+        },
+        {
+            "name": "JavaFX App",
+            "type": "java",
+            "request": "launch",
+            "mainClass": "com.example.Main",
+            "vmArgs": "--module-path /path/to/JavaFX/lib --add-modules=javafx.controls",
+            "args": ""
+        }
+    ]
+}

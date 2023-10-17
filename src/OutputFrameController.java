@@ -79,7 +79,7 @@ public class OutputFrameController {
 
         // Start bot
         // CHOOSE BOT TYPE
-        this.bot = new Bot("genetic");
+        this.bot = new Bot("minimax");
 //        this.bot = new Bot("minimax");
 
         this.playerXTurn = !isBotFirst;
@@ -182,12 +182,12 @@ public class OutputFrameController {
         // Button must be blank.
         else {
             if (this.playerXTurn) {
-//                // UNCOMMENT THIS KALO MAU BOT LWN BOT
-//                int[][] board = convertButtonsToMatrix(this.buttons);
-//                Bot bot = new Bot("minimax", true);
-//                int[] movee = bot.move(board, this.roundsLeft);
-//                i = movee[0];
-//                j = movee[1];
+//                // UNCOMMENT THIS KALO MAU BOT LWN BO
+                int[][] board = convertButtonsToMatrix(this.buttons);
+                Bot bot = new Bot("minimax", true);
+                int[] movee = bot.move(board, this.roundsLeft);
+                i = movee[0];
+                j = movee[1];
                 // Changed background color to green to indicate next player's turn.
                 this.playerXBoxPane.setStyle("-fx-background-color: WHITE; -fx-border-color: #D3D3D3;");
                 this.playerOBoxPane.setStyle("-fx-background-color: #90EE90; -fx-border-color: #D3D3D3;");
@@ -365,7 +365,10 @@ public class OutputFrameController {
 
     private void moveBot() {
         int[][] board = convertButtonsToMatrix(this.buttons);
-        int[] botMove = this.bot.move(board, this.roundsLeft);
+        int[] botMove = this.bot.move2(board, this.roundsLeft);
+        if (botMove == null) {
+            return;
+        }
         int i = botMove[0];
         int j = botMove[1];
 
