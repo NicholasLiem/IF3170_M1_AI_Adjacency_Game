@@ -10,63 +10,6 @@ public class Utils {
 
     // Player X nilainya 1 di board,
     // Player Y nilainya -1.
-    public static double evaluateBoard2(int[][] board) {
-        int sum = 0;
-
-        for (int[] ints : board) {
-            for (int anInt : ints) {
-                sum += anInt;
-            }
-        }
-        sum *= 100;
-
-        int[] dx = {-1, 1, 0, 0};
-        int[] dy = {0, 0, -1, 1};
-
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                if (board[i][j] == -1) {
-                    // Check if this tile is locked.
-                    boolean locked = false;
-                    for (int k = 0; k < dx.length; k++) {
-                        int newRow = i + dx[k];
-                        int newCol = j + dy[k];
-
-                        if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[i].length) {
-                            if (board[newRow][newCol] == 0) {
-                                break;
-                            }
-                        }
-                        locked = true;
-                    }
-                    if (locked) {
-                        sum += -1;
-                    }
-                }
-                if (board[i][j] == 1) {
-                    boolean locked = false;
-                    for (int k = 0; k < dx.length; k++) {
-                        int newRow = i + dx[k];
-                        int newCol = j + dy[k];
-
-                        if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[i].length) {
-                            if (board[newRow][newCol] == 0) {
-                                break;
-                            }
-                        }
-                        locked = true;
-                    }
-                    if (locked) {
-                        sum += 1;
-                    }
-                }
-            }
-        }
-
-
-        return sum;
-    }
-
     public static double evaluateBoard(int[][] board) {
         int sum = 0;
 
@@ -82,45 +25,56 @@ public class Utils {
 
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
-                if (board[i][j] == -1) {
-                    // Check if this tile is locked.
-                    boolean locked = false;
+                if (board[i][j] == 0) {
+                    int sums = 0;
                     for (int k = 0; k < dx.length; k++) {
                         int newRow = i + dx[k];
                         int newCol = j + dy[k];
 
                         if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[i].length) {
-                            if (board[newRow][newCol] == 0) {
-                                break;
+                            if (board[newRow][newCol] != 0) {
+                                sums += board[newRow][newCol];
                             }
                         }
-                        if (k==3) {
-                            locked = true;
-                        }
                     }
-                    if (locked) {
-                        sum += -1;
+                    if (Math.abs(sums) >= 2) {
+                        sum += sums;
                     }
                 }
-                if (board[i][j] == 1) {
-                    boolean locked = false;
-                    for (int k = 0; k < dx.length; k++) {
-                        int newRow = i + dx[k];
-                        int newCol = j + dy[k];
-
-                        if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[i].length) {
-                            if (board[newRow][newCol] == 0) {
-                                break;
-                            }
-                        }
-                        if (k==3) {
-                            locked = true;
-                        }
-                    }
-                    if (locked) {
-                        sum += 1;
-                    }
-                }
+//                if (board[i][j] == -1) {
+//                    // Check if this tile is locked.
+//                    int count = 4;
+//                    for (int k = 0; k < dx.length; k++) {
+//                        int newRow = i + dx[k];
+//                        int newCol = j + dy[k];
+//
+//                        if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[i].length) {
+//                            if (board[newRow][newCol] == 0) {
+//                                count -= 1;
+//                            }
+//                        }
+//                    }
+//                    if (count >= 3) {
+//                        sum += count/-4.0;
+//                    }
+//
+//                }
+//                if (board[i][j] == 1) {
+//                    int count = 4;
+//                    for (int k = 0; k < dx.length; k++) {
+//                        int newRow = i + dx[k];
+//                        int newCol = j + dy[k];
+//
+//                        if (newRow >= 0 && newRow < board.length && newCol >= 0 && newCol < board[i].length) {
+//                            if (board[newRow][newCol] == 0) {
+//                                count -= 1;
+//                            }
+//                        }
+//                    }
+//                    if (count >= 3) {
+//                        sum += count/4.0;
+//                    }
+//                }
             }
         }
 
