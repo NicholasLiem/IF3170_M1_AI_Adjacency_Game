@@ -221,10 +221,10 @@ public class OutputFrameController {
 
                 if (isBotFirst && this.roundsLeft == 0) {
                     this.endOfGame();
+                } else {
+                    // Bot's turn
+                    this.moveBot();
                 }
-
-                // Bot's turn
-                this.moveBot();
             }
             else {
                 this.playerXBoxPane.setStyle("-fx-background-color: #90EE90; -fx-border-color: #D3D3D3;");
