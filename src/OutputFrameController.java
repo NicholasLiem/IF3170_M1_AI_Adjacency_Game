@@ -198,7 +198,7 @@ public class OutputFrameController {
                 if (this.vsBot) {
                     int[][] board = convertButtonsToMatrix(this.buttons);
                     Bot bot = new Bot(this.botTypeX.toLowerCase(), true);
-                    int[] movee = bot.move(board, this.roundsLeft);
+                    int[] movee = bot.move(board, this.roundsLeft, true);
                     i = movee[0];
                     j = movee[1];
                 }
@@ -379,7 +379,7 @@ public class OutputFrameController {
 
     private void moveBot() {
         int[][] board = convertButtonsToMatrix(this.buttons);
-        int[] botMove = this.bot.move(board, this.roundsLeft);
+        int[] botMove = this.bot.move(board, this.roundsLeft, false);
         if (botMove == null) {
             return;
         }

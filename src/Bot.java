@@ -25,7 +25,7 @@ public class Bot {
     }
 
 
-    public int[] move(int[][] board, int roundsLeft) {
+    public int[] move(int[][] board, int roundsLeft, boolean isX) {
 
 
         int[] move = new int[]{(int) (Math.random()*8), (int) (Math.random()*8)};
@@ -33,7 +33,7 @@ public class Bot {
         if (this.type.equalsIgnoreCase("minimax")) {
             move = this.moveMinimax(board, roundsLeft);
         } else if (this.type.equalsIgnoreCase("local")) {
-            move = this.moveLocal(board, roundsLeft);
+            move = this.moveLocal(board, isX);
         } else if (this.type.equalsIgnoreCase("genetic")){
             move = this.moveGenetic(board, roundsLeft);
         }
@@ -41,19 +41,19 @@ public class Bot {
         return move;
     }
 
-    public int[] move2(int[][] board, int roundsLeft) {
-        int[] move = new int[]{(int) (Math.random()*8), (int) (Math.random()*8)};
-
-        if (this.type.equalsIgnoreCase("minimax")) {
-            move = this.moveMinimax2(board, roundsLeft);
-        } else if (this.type.equalsIgnoreCase("local")) {
-            move = this.moveLocal(board, roundsLeft);
-        } else if (this.type.equalsIgnoreCase("genetic")){
-            move = this.moveGenetic(board, roundsLeft);
-        }
-
-        return move;
-    }
+//    public int[] move2(int[][] board, int roundsLeft) {
+//        int[] move = new int[]{(int) (Math.random()*8), (int) (Math.random()*8)};
+//
+//        if (this.type.equalsIgnoreCase("minimax")) {
+//            move = this.moveMinimax2(board, roundsLeft);
+//        } else if (this.type.equalsIgnoreCase("local")) {
+//            move = this.moveLocal(board, roundsLeft);
+//        } else if (this.type.equalsIgnoreCase("genetic")){
+//            move = this.moveGenetic(board, roundsLeft);
+//        }
+//
+//        return move;
+//    }
 
     private int[] moveGenetic(int[][] board, int roundsLeft) {
         long startTime = System.currentTimeMillis();
@@ -70,11 +70,11 @@ public class Bot {
         return bestMove;
     }
 
-    private int[] moveLocal(int[][] board, int roundsLeft) {
+    private int[] moveLocal(int[][] board, boolean isX) {
         long startTime = System.currentTimeMillis();
         LocalAgent localAgent = new LocalAgent();
 
-        int[] bestMove = localAgent.move(board);
+        int[] bestMove = localAgent.move(board, isX);
 
         long endTime = System.currentTimeMillis();
         long executionTime = endTime - startTime;
