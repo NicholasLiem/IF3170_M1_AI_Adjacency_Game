@@ -2,12 +2,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -23,8 +21,19 @@ import java.io.IOException;
 public class InputFrameController{
 
     public CheckBox isBotFirst;
+    public CheckBox vsBot;
+
+    @FXML
+    private GridPane gridPane;
+
+    @FXML
+    private Label playerNameLabel;
+
     @FXML
     private TextField player1;
+
+    @FXML
+    private Label botNameLabel;
 
     @FXML
     private TextField player2;
@@ -33,7 +42,13 @@ public class InputFrameController{
     private ComboBox<String> numberOfRounds;
 
     @FXML
-    private ComboBox<String> botType;
+    private ComboBox<String> botTypeO;
+
+    @FXML
+    private ComboBox<String> botTypeX;
+
+    @FXML
+    private Label botTypeXLabel;
 
 
     /**
@@ -46,13 +61,41 @@ public class InputFrameController{
         ObservableList<String> numberOfRoundsDropdown = FXCollections.observableArrayList(
                 "", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15",
                 "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28");
-        this.numberOfRounds.setItems(numberOfRoundsDropdown);
+        ObservableList<String> botTypes = FXCollections.observableArrayList("Local", "Minimax", "Genetic");
 
-        ObservableList<String> botTypeDropdown = FXCollections.observableArrayList(
-                "Local", "Minimax", "Genetic"
-        );
-        this.botType.setItems(botTypeDropdown);
-        this.botType.getSelectionModel().selectLast();
+        Label pNameLabel = this.playerNameLabel;
+        Label bNameLabel = this.botNameLabel;
+        Label botTypeXLabel = this.botTypeXLabel;
+        TextField pl1 = this.player1;
+        TextField pl2 = this.player2;
+        ComboBox<String> botTypeX = this.botTypeX;
+
+        gridPane.getChildren().remove(this.botTypeXLabel);
+        gridPane.getChildren().remove(this.botTypeX);
+
+        this.vsBot.setOnAction(e -> {
+            if (this.vsBot.isSelected()) {
+                gridPane.getChildren().remove(this.playerNameLabel);
+                gridPane.getChildren().remove(this.player1);
+                gridPane.getChildren().remove(this.botNameLabel);
+                gridPane.getChildren().remove(this.player2);
+                gridPane.add(botTypeXLabel, 0, 6);
+                gridPane.add(botTypeX, 1, 6);
+            } else {
+                gridPane.add(pNameLabel, 0, 1);
+                gridPane.add(pl1, 1, 1);
+                gridPane.add(bNameLabel, 0, 2);
+                gridPane.add(pl2, 1, 2);
+                gridPane.getChildren().remove(this.botTypeXLabel);
+                gridPane.getChildren().remove(this.botTypeX);
+            }
+        });
+
+        this.numberOfRounds.setItems(numberOfRoundsDropdown);
+        this.botTypeO.setItems(botTypes);
+        this.botTypeO.getSelectionModel().selectLast();
+        this.botTypeX.setItems(botTypes);
+        this.botTypeX.getSelectionModel().selectLast();
 
         this.numberOfRounds.getSelectionModel().select(0);
     }
@@ -68,7 +111,8 @@ public class InputFrameController{
         this.player1.setText("");
         this.player2.setText("");
         this.numberOfRounds.getSelectionModel().select(0);
-        this.botType.getSelectionModel().selectLast();
+        this.botTypeO.getSelectionModel().selectLast();
+        this.botTypeX.getSelectionModel().selectLast();
     }
 
 
@@ -83,15 +127,17 @@ public class InputFrameController{
     private void play() throws IOException{
         if (this.isInputFieldValidated()){
             // Close primary stage/input frame.
-            Stage primaryStage = (Stage) this.player1.getScene().getWindow();
+
+            Stage primaryStage = (Stage) this.botTypeO.getScene().getWindow();
             primaryStage.close();
+
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("OutputFrame.fxml"));
             Parent root = loader.load();
 
             // Get controller of output frame and pass input including player names and number of rounds chosen.
             OutputFrameController outputFC = loader.getController();
-            outputFC.getInput(this.player1.getText(), this.player2.getText(), this.numberOfRounds.getValue(), this.isBotFirst.isSelected(), this.botType.getValue());
+            outputFC.getInput(this.player1.getText(), this.player2.getText(), this.numberOfRounds.getValue(), this.isBotFirst.isSelected(), this.botTypeX.getValue(), this.botTypeO.getValue(), this.vsBot.isSelected());
 
             // Open the new frame.
             Stage secondaryStage = new Stage();
@@ -113,6 +159,11 @@ public class InputFrameController{
         String playerX = this.player1.getText();
         String playerO = this.player2.getText();
         String roundNumber = this.numberOfRounds.getValue();
+
+        if (this.vsBot.isSelected()) {
+            playerX = this.botTypeX.getValue() + "X";
+            playerO = this.botTypeO.getValue() + "O";
+        }
 
         if (playerX.length() == 0) {
             new Alert(Alert.AlertType.ERROR, "Player 1 name is blank.").showAndWait();

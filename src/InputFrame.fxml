@@ -10,41 +10,55 @@
             fx:controller="InputFrameController">
     <padding><Insets top="5" bottom="5" left="5" right="5"/></padding>
     <top>
-        <GridPane>
-            <Label text="Player Name (X): " GridPane.rowIndex="0" GridPane.columnIndex="0">
+        <GridPane fx:id="gridPane">
+            <Label fx:id="vsBotLabel" text="Bot VS Bot: " GridPane.rowIndex="0" GridPane.columnIndex="0">
                 <font>
                     <Font name="Arial Bold" size="12"/>
                 </font>
             </Label>
-            <TextField fx:id="player1" GridPane.rowIndex="0" GridPane.columnIndex="1" />
+            <CheckBox fx:id="vsBot" GridPane.rowIndex="0" GridPane.columnIndex="1" />
 
-            <Label text="Bot Name (O): " GridPane.rowIndex="1" GridPane.columnIndex="0">
+            <Label fx:id="playerNameLabel" text="Player Name (X): " GridPane.rowIndex="1" GridPane.columnIndex="0">
                 <font>
                     <Font name="Arial Bold" size="12"/>
                 </font>
             </Label>
-            <TextField fx:id="player2" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+            <TextField fx:id="player1" GridPane.rowIndex="1" GridPane.columnIndex="1" />
 
-            <Label text="Number of Rounds to be played: " GridPane.rowIndex="2" GridPane.columnIndex="0">
+            <Label fx:id="botNameLabel" text="Bot Name (O): " GridPane.rowIndex="2" GridPane.columnIndex="0">
                 <font>
                     <Font name="Arial Bold" size="12"/>
                 </font>
             </Label>
-            <ComboBox fx:id="numberOfRounds" GridPane.rowIndex="2" GridPane.columnIndex="1" maxWidth="Infinity" />
+            <TextField fx:id="player2" GridPane.rowIndex="2" GridPane.columnIndex="1" />
 
-            <Label text="Bot goes first: " GridPane.rowIndex="3" GridPane.columnIndex="0">
+            <Label text="Number of Rounds to be played: " GridPane.rowIndex="3" GridPane.columnIndex="0">
                 <font>
                     <Font name="Arial Bold" size="12"/>
                 </font>
             </Label>
-            <CheckBox fx:id="isBotFirst" GridPane.rowIndex="3" GridPane.columnIndex="1" />
+            <ComboBox fx:id="numberOfRounds" GridPane.rowIndex="3" GridPane.columnIndex="1" maxWidth="Infinity" />
 
-            <Label text="Bot type: " GridPane.rowIndex="4" GridPane.columnIndex="0">
+            <Label text="(O) goes first: " GridPane.rowIndex="4" GridPane.columnIndex="0">
                 <font>
                     <Font name="Arial Bold" size="12"/>
                 </font>
             </Label>
-            <ComboBox fx:id="botType" GridPane.rowIndex="4" GridPane.columnIndex="1" maxWidth="Infinity" />
+            <CheckBox fx:id="isBotFirst" GridPane.rowIndex="4" GridPane.columnIndex="1" />
+
+            <Label text="Bot type (O): " GridPane.rowIndex="5" GridPane.columnIndex="0">
+                <font>
+                    <Font name="Arial Bold" size="12"/>
+                </font>
+            </Label>
+            <ComboBox fx:id="botTypeO" GridPane.rowIndex="5" GridPane.columnIndex="1" maxWidth="Infinity" />
+
+            <Label fx:id="botTypeXLabel" text="Bot type (X): " GridPane.rowIndex="6" GridPane.columnIndex="0">
+                <font>
+                    <Font name="Arial Bold" size="12"/>
+                </font>
+            </Label>
+            <ComboBox fx:id="botTypeX" GridPane.rowIndex="6" GridPane.columnIndex="1" maxWidth="Infinity" />
         </GridPane>
     </top>
 

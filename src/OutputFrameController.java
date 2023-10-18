@@ -53,6 +53,8 @@ public class OutputFrameController {
     private int roundsLeft;
     private boolean isBotFirst;
     private Bot bot;
+    private String botTypeX;
+    private boolean vsBot;
 
 
     // 6 num rounds = 14 round
@@ -70,19 +72,27 @@ public class OutputFrameController {
      * @param name2 Name of Player 2 (Bot).
      * @param rounds The number of rounds chosen to be played.
      * @param isBotFirst True if bot is first, false otherwise.
-     * @param botType
+     * @param botTypeX
+     * @param botTypeO
+     * @param vsBot
      *
      */
-    void getInput(String name1, String name2, String rounds, boolean isBotFirst, String botType){
+    void getInput(String name1, String name2, String rounds, boolean isBotFirst, String botTypeX, String botTypeO, boolean vsBot){
         this.playerXName.setText(name1);
         this.playerOName.setText(name2);
+        if (vsBot) {
+            this.playerXName.setText(botTypeX + " - X");
+            this.playerOName.setText(botTypeO + " - O");
+        }
         this.roundsLeftLabel.setText(rounds);
-        this.botTypeLabel.setText(botType);
+        this.botTypeLabel.setText(botTypeX + " VS " + botTypeO);
         this.roundsLeft = Integer.parseInt(rounds);
         this.isBotFirst = isBotFirst;
+        this.botTypeX = botTypeX;
+        this.vsBot = vsBot;
 
         // Start bot
-        this.bot = new Bot(botType.toLowerCase());
+        this.bot = new Bot(botTypeO.toLowerCase());
 
         this.playerXTurn = !isBotFirst;
         if (this.isBotFirst) {
@@ -185,11 +195,13 @@ public class OutputFrameController {
         else {
             if (this.playerXTurn) {
 //                // UNCOMMENT THIS KALO MAU BOT LWN BOT
-//                int[][] board = convertButtonsToMatrix(this.buttons);
-//                Bot bot = new Bot("minimax", true);
-//                int[] movee = bot.move(board, this.roundsLeft);
-//                i = movee[0];
-//                j = movee[1];
+                if (this.vsBot) {
+                    int[][] board = convertButtonsToMatrix(this.buttons);
+                    Bot bot = new Bot(this.botTypeX.toLowerCase(), true);
+                    int[] movee = bot.move(board, this.roundsLeft);
+                    i = movee[0];
+                    j = movee[1];
+                }
                 // Changed background color to green to indicate next player's turn.
                 this.playerXBoxPane.setStyle("-fx-background-color: WHITE; -fx-border-color: #D3D3D3;");
                 this.playerOBoxPane.setStyle("-fx-background-color: #90EE90; -fx-border-color: #D3D3D3;");
