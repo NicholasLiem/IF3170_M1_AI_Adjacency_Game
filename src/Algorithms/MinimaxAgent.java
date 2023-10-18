@@ -105,7 +105,7 @@ public class MinimaxAgent {
     public TreeNode<int[]> calculate2(TreeNode<int[]> node, int[][] board, double alpha, double beta, int depth, int maxDepth, boolean isMaximizingPlayer, int roundsLeft) {
         // Return if terminal node
         if (roundsLeft == 0 || depth == maxDepth || Utils.isTerminal(board)) {
-            double score = Utils.evaluateBoard2(board);
+            double score = Utils.evaluateBoard(board);
             node.setBoard(board);
             node.setScore(score);
             return node;

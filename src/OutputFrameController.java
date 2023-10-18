@@ -83,9 +83,11 @@ public class OutputFrameController {
         if (vsBot) {
             this.playerXName.setText(botTypeX + " - X");
             this.playerOName.setText(botTypeO + " - O");
+            this.botTypeLabel.setText(botTypeX + " VS " + botTypeO);
+        } else {
+            this.botTypeLabel.setText(botTypeO);
         }
         this.roundsLeftLabel.setText(rounds);
-        this.botTypeLabel.setText(botTypeX + " VS " + botTypeO);
         this.roundsLeft = Integer.parseInt(rounds);
         this.isBotFirst = isBotFirst;
         this.botTypeX = botTypeX;
