@@ -38,7 +38,7 @@ public class Utils {
                         }
                     }
                     if (Math.abs(sums) >= 2) {
-                        sum += sums;
+                        sum += sums * -1;
                     }
                 }
 //                if (board[i][j] == -1) {
